@@ -45,8 +45,6 @@ The goals of this project are the following:
 
 # Implementation of the PID controller
 
-Implementing the PID controller was somewhat trivial because it was already done in the [lab.](https://github.com/justinlee007/CarND-PID-Lab/blob/master/src/python/robot.py#L132)  That exercise realized a robot simulator moving around an open area where updates to position were calculated and CTE was used to accurately align the robot to desired position.
-
 In the Udacity car simulator, the CTE value is read from the data message sent by the simulator, and the PID controller updates the error values and predicts the steering angle based on the total error.  This predicted steering angle is a correction of the updated error to the desired setpoint based on proportional, integral, and derivative terms (hence PID).
 
 ![image](https://user-images.githubusercontent.com/34095574/88364473-4cbbb000-cd83-11ea-9438-fb0273bf8aff.png)
@@ -79,34 +77,11 @@ else
 ```
 I found that using this throttle logic kept the car on the track when oscillating or when the data message throughput was low and allowed for moderately high speeds. 
 
-### Describe the effect each of the P, I, D components had in your implementation.
-
-First, note that I implemented a PID controller for steering only. Qualitatively speaking, the effects of tweaking the proportional gain (P), integral gain (I), and differential gain (D) are as follows.
-
-_P:_
-
-Setting too high of a value for _P_ tends to create osciallations in the driving trajectory. At worst, this caused the vehicle to swerve off the road. At best, this causes a very uncomfortable ride.
-
-Setting too low of a value for _P_ results on the vehicle not turning enough in tight corners. This might cause the vehicle to run off track in a tight corner.
-
-_I:_
-
-When I set _I_ to 0, honestly I didn't notice much difference in behavior. The purpose of _I_ is to compensate for an inherent steering bias in the vehicle, so this leads me to conclude that the vehicle has very little or no steering bias.
-
-When I set _I_ to a significantly high value, I noticed the vehicle swerves a lot, since the _I_ term causes the vehicle to overcompensate for the CTE (over time).
-
-_D:_
-
-_D_ tends to be the "counter-weight" to _P_.
-
-Setting too high of a value for _D_ causes the vehicle to turn too slowly. This would cause an issue in tight corners, where the vehicle may drive off the road.
-
-Setting too low of a value for _D_ means the effects of _P_ will be unchecked, which tends to result in the vehicle osciallating about its intended path.
 
 
 # Tuning the Hyperparameters
 
-The final hyperparameters were manually chosen. Based on the effects of P, I, D described above, I would tweak P/I/D depending on how the vehicle behaved in the simulation.
+The final hyperparameters were manually chosen. I would tweak P/I/D depending on how the vehicle behaved in the simulation.
 
 For example, if I observed the vehicle was oscillating too harshly about its intended path, I would either decrease P, increase D, or both. On the other hand, if I observed the vehicle going too straight through tight corners, I would do the opposite (increase P, decrease D, or both).
 
@@ -114,7 +89,8 @@ As for the hyperparameter I, I first noticed that setting I to non-zero values w
 
 
 # Results
-After much tinkering, my implementation runs well enough to get to 67 MPH and stays on the track.
+
+A short video with the final parameters:
 
 [Link to project video](https://youtu.be/z8wwFCgMu0s)
 
